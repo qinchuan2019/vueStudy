@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue004vue-mockjs</title>
+    <script src="lib/vue.js"></script>
+    <script src="lib/vue-resource-1.3.4.js"></script>
+    <script src="lib/mock.js"></script>
+    <script src="lib/mock-detail2.js"></script>
+    <link rel="stylesheet" href="lib/bootstrap.min.css" />
+</head>
+<body>
+
+<div id="app">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">品牌管理</h3>
+        </div>
+        <div class="panel-body form-inline">
+            <label>
+                <input type="text" class="form-control" v-model="obj.id">
+            </label>
+            <label>
+                <input type="text" class="form-control" v-model="obj.name">
+            </label>
+            <label>
+                <input type="text" class="form-control" v-model="obj.content">
+            </label>
+            <button class="btn btn-primary" @click="addData">添加</button>
+            <button class="btn btn-info" @click="updateData">修改</button>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>姓名</th>
+            <th>日期</th>
+            <th>内容</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="item in list">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.lastDate}}</td>
+            <td>{{item.content}}</td>
+            <td>
+                <button type='button' class="btn btn-danger" @click="deleteData(item.id)">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    new Vue({
+        el:'#app',
+        data:{
+            list: [],
+            obj: {
+                //将添加的数据存到obj对象中
+                id: 0,
+                name: "",
+                content: ""
+            }
+        },
+        created() {
+            this.getList();
+        },
+        methods: {
+            //查询列表数据
+            getList() {
+                this.$http.get("getList").then(res => {
+                    this.list = res.body.data;
+                    arr = res.body.data;
+                });
+            },
+            //删除列表数据
+            deleteData(id) {
+                this.$http.post("delete", {id: id}).then(res => {
+                    console.log(res)
+                    this.list = res.body.data;
+                });
+            },
+            //增加列表数据
+            addData() {
+                this.$http.post("add", this.obj).then(res => {
+                    console.log(res)
+                    this.list = res.body.data;
+                }).then(res => {});
+            },
+            //修改列表数据
+            updateData() {
+                var that = this;
+                this.$http.post("update", {obj: this.obj}).then(function (res) {
+                    that.list = res.body.data;
+                });
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

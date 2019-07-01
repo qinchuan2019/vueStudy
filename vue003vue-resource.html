@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue003vue-resource</title>
+    <script src="./lib/vue.js"></script>
+    <script src="lib/vue-resource-1.3.4.js"></script>
+    <script src="lib/mock.js"></script>
+    <script src="lib/mock-detail.js"></script>
+    <link rel="stylesheet" href="lib/bootstrap.min.css" />
+</head>
+<body>
+
+<div id="app">
+    <div class="col-lg-12 text-center">
+        <div class="btn-group">
+            <input type="button" class="btn btn-danger" value="get请求" @click="getInfo" />
+        </div>
+    </div>
+</div>
+
+<script>
+    var vm = new Vue({
+        el:'#app',
+        data:{
+
+        },
+        methods:{
+            getInfo(){
+                this.$http.get('http:fake_url_getList.com').then(function(result){
+                    console.log(result.body)
+                },function(result){
+                    console.log(result)
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

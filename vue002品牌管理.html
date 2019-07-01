@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue002品牌管理</title>
+    <script src="lib/vue.js"></script>
+    <link rel="stylesheet" href="lib/bootstrap.min.css" />
+</head>
+<body>
+
+<div id="app">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">品牌管理</h3>
+        </div>
+        <div class="panel-body form-inline">
+            <label>
+                Id:
+                <input type="text" class="form-control" v-model="Id" />
+            </label>
+            <label>
+                Name:
+                <input type="text" class="form-control" v-model="Name" />
+            </label>
+            <input type="button" class="btn btn-primary" value="添加" @click="add" />
+            <label>
+                关键字:
+                <input type="text" class="form-control" v-model="keywords" />
+            </label>
+        </div>
+    </div>
+    <table class="table table-hover table-striped table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Ctime</th>
+                <th>operation</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in search(keywords)" :key="item.Id">
+                <td>{{item.Id}}</td>
+                <td>{{item.Name}}</td>
+                <td>{{item.Ctime}}</td>
+                <td>
+                    <a href="" @click.prevent="del(item.Id)">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            Id:null,
+            Name:null,
+            keywords:'',
+            Ctime:new Date(),
+            list:[
+                {
+                    Id:1,
+                    Name:'BMW',
+                    Ctime:new Date()
+                },
+                {
+                    Id:2,
+                    Name:'BENZ',
+                    Ctime:new Date()
+                }
+            ]
+        },
+        methods:{
+            add(){
+                this.list.push({
+                    Id:this.Id,
+                    Name:this.Name,
+                    Ctime:this.Ctime
+                })
+                this.Id = this.Name = '';
+            },
+            del(id){
+                this.list.some((item,index) => {
+                    if(item.Id === id){
+                        this.list.splice(index,1)
+                    }
+                    return true;
+                })
+            },
+            search(keywords){
+                var tempArry = [];
+
+                this.list.forEach(item => {
+                    if(item.Name.indexOf(keywords) != -1){
+                        tempArry.push(item)
+                    }
+                })
+
+                return tempArry;
+            }
+        }
+    })
+</script>
+</body>
+</html>
