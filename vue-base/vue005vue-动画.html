@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue005vue-animate</title>
+    <script src="lib/vue.js"></script>
+    <link rel="stylesheet" href="lib/bootstrap.min.css" />
+    <style>
+        /**
+            name属性为h3Animate的transition自定义元素所包含的元素要进行的动画进入之前和离开之后的状态
+         */
+        .h3Animate-enter,.h3Animate-leave-to{
+            opacity: 0;
+            transform: translateX(250px);
+        }
+        /**
+            name属性为h3Animate的transition自定义元素所包含的元素要进行的动画(这种描述未必合适)
+         */
+        .h3Animate-enter-active,.h3Animate-leave-active{
+            transition:all 1s ease;
+        }
+
+        /**
+            name属性为h6Animate的transition自定义元素所包含的元素要进行的动画进入之前和离开之后的状态
+         */
+        .h6Animate-enter,.h6Animate-leave-to{
+            opacity: 0;
+            transform: translateY(150px);
+        }
+        /**
+            name属性为h6Animate的transition自定义元素所包含的元素要进行的动画(这种描述未必合适)
+         */
+        .h6Animate-enter-active,.h6Animate-leave-active{
+            transition:all 1s ease;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <button class="btn btn-primary" @click="flag1 = !flag1">toggle h3</button>
+
+    <div style="height: 55px;">
+        <transition name="h3Animate">
+            <h3 v-if="flag1">这是一个H3</h3>
+        </transition>
+    </div>
+
+    <button class="btn btn-danger" @click="flag2 = !flag2">toggle h6</button>
+
+    <div style="height: 55px;">
+        <transition name="h6Animate">
+            <h6 v-if="flag2">这是一个H6</h6>
+        </transition>
+    </div>
+
+</div>
+<script>
+    new Vue({
+        el:'#app',
+        data:{
+            flag1:false,
+            flag2:false
+        },
+        methods:{
+        }
+    })
+</script>
+</body>
+</html>
