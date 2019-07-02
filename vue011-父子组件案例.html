@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue父子组件案例</title>
+    <link rel="stylesheet" href="./lib/bootstrap.min.css" />
+    <script src="./lib/vue.js"></script>
+    <script src="./lib/vue-resource-1.3.4.js"></script>
+    <script src="./lib/mock.js"></script>
+</head>
+<body>
+
+<div id="app">
+    <cmtbx @func="loadComments"></cmtbx>
+    <ul class="list-group">
+        <li class="list-group-item" v-for="item in list" :key="item.id">
+            <span class="badge badge-info float-right">{{item.name}}</span>
+            {{item.comment}}
+        </li>
+    </ul>
+</div>
+
+<template id="cmtbx">
+    <div class="col-lg-12">
+        <div class="form-group">
+            <label class="control-label">评论人</label>
+            <input type="text" class="form-control" v-model="name"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label">评论内容</label>
+            <textarea class="form-control" v-model="comment"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="button" value="提交评论" class="btn btn-primary" @click="postComment"/>
+        </div>
+    </div>
+</template>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            list: [],
+            fakeData:[
+                {
+                    id:1,
+                    name:'jacky',
+                    comment:'this is a fake data111111111'
+                },
+                {
+                    id:2,
+                    name:'Lucy',
+                    comment:'this is a fake data222222222'
+                },
+                {
+                    id:3,
+                    name:'Mandy',
+                    comment:'this is a fake data333333333'
+                },
+            ]
+        },
+        methods: {
+            loadComments() {
+                this.list = JSON.parse(localStorage.getItem('cmts') || this.fakeData);
+                console.log(this.list)
+            }
+        },
+        created() {
+            this.loadComments()
+        },
+        components: {
+            cmtbx: {
+                template: '#cmtbx',
+                methods: {
+                    postComment() {
+                        var postObj = {
+                            id: Date.now(),
+                            name: this.name,
+                            comment: this.comment
+                        }
+                        var list = JSON.parse(localStorage.getItem('cmts') || '[]');
+                        list.unshift(postObj);
+                        localStorage.setItem('cmts',JSON.stringify(list));
+                        /**
+                         * 子组件调用父组件方法
+                         * 子组件引用处标签上添加自定义事件 @func="父组件方法名"
+                         * 子组件通过this.$emit方式调用，第一个参数为自定义事件名称字符串，后面的参数为父组件方法传入的参数，依次类推
+                         */
+                        this.$emit('func');
+
+                        this.name = this.comment = '';
+                    }
+                },
+                data() {
+                    return {
+                        name: '',
+                        comment: ''
+                    }
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>

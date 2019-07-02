@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue-路由命名视图实现经典布局</title>
+    <script src="vue.js"></script>
+    <script src="node_modules/vue-router/dist/vue-router.min.js"></script>
+    <style>
+        .container{
+            display: flex;
+        }
+        .left{
+            flex: 2;
+        }
+        .main{
+            flex: 8;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <router-view></router-view>
+    <div class="container">
+        <router-view name="left"></router-view>
+        <router-view name="main"></router-view>
+    </div>
+</div>
+
+<script>
+
+    var header = {
+        template:'<h1>头部</h1>'
+    }
+
+    var leftBox = {
+        template:'<h3 class="left">leftBox左侧内容区</h3>'
+    }
+
+    var rightBox = {
+        template:'<h3 class="main">rightBox右侧内容区</h3>'
+    }
+
+    var router = new VueRouter({
+        routes:[
+            {
+                path:'/',
+                components:{
+                    default:header,
+                    left:leftBox,
+                    main:rightBox
+                }
+            }
+        ]
+    })
+
+    new Vue({
+        el:'#app',
+        router
+    })
+</script>
+</body>
+</html>

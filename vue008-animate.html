@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue-animate2</title>
+    <script src="./lib/vue.js"></script>
+    <style>
+        li{
+            padding-left: 8px;
+            line-height: 35px;
+            border: 1px solid #999;
+            margin-bottom: 5px;
+            width: 100%;
+        }
+        li:hover{
+            background-color: hotpink;
+            transition: all 0.8s ease;
+        }
+
+        .listAnimate-enter,
+        .listAnimate-leave-to{
+            opacity: 0;
+            transform: translateX(150px);
+        }
+        .listAnimate-enter-active,
+        .listAnimate-leave-active{
+            transition: all 0.4s ease;
+        }
+
+        .listAnimate-move{
+            transition: all 0.4s ease;
+        }
+        .listAnimate-leave-active{
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <label>
+        Id:
+        <input type="text" v-model="Id"/>
+    </label>
+    <label>
+        Name:
+        <input type="text" v-model="Name"/>
+    </label>
+    <input type="button" value="添加一条" @click="add"/>
+    <ul>
+        <transition-group name="listAnimate">
+            <li v-for="item in list" :key="item.Name">
+                Id:{{item.Id}}-------Name:{{item.Name}}
+                <button @click="del(item.Id)">删除</button>
+            </li>
+        </transition-group>
+    </ul>
+</div>
+<script>
+    new Vue({
+        el:'#app',
+        data:{
+            Id:'',
+            Name:'',
+            list:[
+                {
+                    Id:'asssda',
+                    Name:'Jacky'
+                },
+                {
+                    Id:'asssdb',
+                    Name:'Tom'
+                },
+                {
+                    Id:'asssdc',
+                    Name:'Lucy'
+                },
+                {
+                    Id:'asssdd',
+                    Name:'Jessica'
+                }
+            ]
+        },
+        methods:{
+            add(){
+                this.list.push({
+                    Id:this.Id,
+                    Name:this.Name
+                })
+                this.Id = '';
+                this.Name = '';
+            },
+            del(Id){
+                for(var i=0;i<this.list.length;i++){
+                    if(Id === this.list[i].Id){
+                        this.list.splice(i,1)
+                    }
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>
