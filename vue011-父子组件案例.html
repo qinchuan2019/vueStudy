@@ -56,13 +56,12 @@
                     id:3,
                     name:'Mandy',
                     comment:'this is a fake data333333333'
-                },
+                }
             ]
         },
         methods: {
             loadComments() {
-                this.list = JSON.parse(localStorage.getItem('cmts') || this.fakeData);
-                console.log(this.list)
+                this.list = JSON.parse(localStorage.getItem('cmts'))  || this.fakeData;
             }
         },
         created() {
